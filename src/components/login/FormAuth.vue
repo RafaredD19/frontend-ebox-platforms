@@ -91,11 +91,13 @@ export default {
 .logo-image {
   width: 80px;
   height: 80px;
+  margin-left: 40%;
 }
 
 .login-image {
   width: 100%;
   height: 100%;
+
   object-fit: cover;
 }
 </style>
