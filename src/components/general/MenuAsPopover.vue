@@ -70,7 +70,7 @@ export default {
 <style scoped>
 i {
     transition: transform 0.3s ease;
-    /* Agrega esta línea */
+
 }
 
 .rotated {

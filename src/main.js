@@ -10,7 +10,8 @@ import router from './router';
 import store from './store';
 
 loadFonts()
-
+// Llamar a la acción para inicializar el estado desde localStorage
+store.dispatch('initializeStateFromLocalStorage');
 createApp(App)
   .use(vuetify)
   .use(router)

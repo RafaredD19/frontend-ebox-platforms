@@ -6,9 +6,9 @@
                 <div class="p-2 py-7 flex items-center justify-center gap-2">
                     <div>
                         <div class="p-1 pt-4 flex items-center justify-center">
-                            <img :src="logoEdriver" class="w-[6rem] bg-gray-100 rounded-md" />
+                            <img :src="logobox" class="w-5 h-5 bg-gray-100 rounded-md " />
                         </div>
-                        <p v-if="!rail" class="font-bold text-2xl text-center w-full">eDriver</p>
+                        <p v-if="!rail" class="font-bold text-2xl text-center w-full">Caja Común</p>
                     </div>
                 </div>
                 <SidebarLayout :itemsNavegation="filteredItems" :rail="rail" />
@@ -48,7 +48,7 @@ import { ref, onMounted, computed } from 'vue';
 import SidebarLayout from './SidebarLayout.vue';
 import avatarImage from "@/assets/iconuser_hombre.png";
 import MenuAsPopover from '@/components/general/MenuAsPopover.vue';
-import LogoEdriver from "@/assets/logo_edriver.png";
+import Logobox from "@/assets/logo_caja_comun.png";
 import store from '@/store';
 
 export default {
@@ -59,7 +59,7 @@ export default {
     data() {
         return {
             avatarPath: avatarImage,
-            logoEdriver: LogoEdriver
+            logobox: Logobox
         }
     },
     setup() {
@@ -72,8 +72,8 @@ export default {
             {
                 icon: "mdi-file-question-outline",
                 title: "Formularios",
-                value: "forms",
-                to: "/forms",
+                value: "homes",
+                to: "/homes",
                 children: []
             },
             {
@@ -110,9 +110,9 @@ export default {
             // Lógica para filtrar los ítems según el rol
             if (store.state.role === 'ADMIN_ROLE') {
                 return ItemsNavegation.value.filter(item => item.value === 'companies');
-            } else if (store.state.role === 'REGULAR_USER_ROLE') {
-                // Filtra la lista para mostrar solo ciertos ítems para el rol de usuario
-                return ItemsNavegation.value.filter(item => item.value === 'forms' || item.value === 'reportsforms');
+            } else if (store.state.role === 'SUPER_MASTER') {
+  
+                return ItemsNavegation.value.filter(item => item.value === 'homes' || item.value === 'reportsforms');
             } else if (store.state.role === 'MASTER_ADMIN_ROLE') {
                 // Filtra la lista para mostrar solo ciertos ítems para el rol de master admin
                 return ItemsNavegation.value.filter(item => item.value === 'administrator');

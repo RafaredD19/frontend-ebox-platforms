@@ -1,11 +1,13 @@
 <template>
-  <div class="flex justify-center items-center w-full h-screen overflow-y-hidden bg-login">
+  <div class="flex justify-center items-center w-200 h-screen overflow-y-hidden bg-login">
     <div class="w-full h-full">
-      <div class="w-full flex justify-end">
-        <h1 class="text-gray-600 pt-10 font-bold text-5xl mr-15">eDrivers</h1>
+      <div class="w-200 flex justify-end">
+     
+        <h1 class="text-gray-600 pt-10 font-bold text-5xl mr-15"></h1>
+     
       </div>
       <div class="flex justify-start w-full pt-[2rem]">
-        <div class="min-w-[30rem] rounded-xl ml-20 pt-3 bg-white">
+        <div class="min-w-[30rem] rounded-xl ml-20 pt-1 bg-white">
           <div v-if="statusError" class="flex justify-center">
             <v-alert color="#FF5250" theme="dark" icon="mdi-alert-circle" density="compact" closable class="max-w-[25rem]"
               border>
@@ -21,7 +23,7 @@
 <script>
 import { ref } from 'vue';
 import FormAuthVue from '@/components/login/FormAuth.vue';
-import ImgFrontPage from '@/assets/login/FrontPage.png';
+
 import { authLoginApi } from '@/api/LoginService';
 import { useRouter } from 'vue-router';
 import store from '@/store';
@@ -32,7 +34,7 @@ export default {
   },
   data: () => ({
     visible: false,
-    imgFrontPage: ImgFrontPage
+  
   }),
   setup() {
     const messageError = ref('');
@@ -78,8 +80,8 @@ export default {
 <style scoped>
 /* Estilos para la capa transparente */
 .bg-login {
-  background-image: url('../assets/login/FrontPage.png');
-  /* Ruta de la imagen */
+  /* background-image: url('../assets/login/FrontPage.png'); */
+
   background-size: cover;
   background-position: bottom;
 }
