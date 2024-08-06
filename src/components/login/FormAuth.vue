@@ -7,9 +7,7 @@
             <img :src="LogoImage" alt="Logo" class="logo-image">
           </v-card-title>
           <div>
-            <div class="w-full flex justify-center">
-              
-            </div>
+            <div class="w-full flex justify-center"></div>
             <h1 class="text-2xl pb-2 color-blue-600 text-center">Bienvenido a eBox</h1>
             <p class="text-xs pb-2 text-gray-500 text-center mt-2 pr-10 pl-10">
               Ingresa las credenciales otorgadas por tu proveedor
@@ -30,13 +28,13 @@
               </div>
               <v-text-field
                 v-model="password"
-                :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
-                :type="visible ? 'text' : 'password'"
+                :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+                :type="showPassword ? 'text' : 'password'"
                 density="compact"
                 placeholder="Contraseña"
                 prepend-inner-icon="mdi-lock-outline"
                 variant="outlined"
-                @click:append-inner="toggleVisibility"
+                @click:append-inner="togglePasswordVisibility"
               ></v-text-field>
               <v-btn type="submit" color="primary" class="mt-4" block>Ingresar</v-btn>
             </v-form>
@@ -56,31 +54,40 @@ import loginImage from '@/assets/login/login.png';
 import logoImage from '@/assets/login/logo_sysnet.png';
 
 export default {
-    data: () => ({
-        visible: false,
-        LoginImage: loginImage,
-        LogoImage : logoImage
-    }),
-    emits: ['validate-login'],
-    setup(_, { emit }) {
-        const username = ref('');
-        const password = ref('');
+  data() {
+    return {
+     
+      LoginImage: loginImage,
+      LogoImage: logoImage
+    };
+  },
+  emits: ['validate-login'],
+  setup(_, { emit }) {
+    const username = ref('');
+    const password = ref('');
+    const showPassword = ref(false);
 
-        const validateLogin = () => {
-            const data = {
-                username: username.value,
-                password: password.value
-            }
-            emit('validate-login', data)
-        }
+    const validateLogin = () => {
+      const data = {
+        username: username.value,
+        password: password.value
+      };
+      emit('validate-login', data);
+    };
 
-        return {
-            username,
-            password,
-            validateLogin
-        }
-    }
-}
+    const togglePasswordVisibility = () => {
+      showPassword.value = !showPassword.value;
+    };
+
+    return {
+      username,
+      password,
+      validateLogin,
+      togglePasswordVisibility,
+      showPassword
+    };
+  }
+};
 </script>
 
 <style scoped>
@@ -97,7 +104,6 @@ export default {
 .login-image {
   width: 100%;
   height: 100%;
-
   object-fit: cover;
 }
 </style>

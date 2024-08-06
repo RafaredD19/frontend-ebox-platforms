@@ -40,21 +40,21 @@ router.beforeEach((to, from, next) => {
         next({ name: 'login' });
     } else if (to.name === 'login' && store.state.isAuthenticated) {
         if (store.state.role == "ADMIN_ROLE") {
-            next({ name: 'customers' });
+            next({ name: 'homes' });
         } else if (store.state.role == "SUPER_MASTER") {
             next({ name: 'homes' });
         }else if (store.state.role == "MASTER_ADMIN_ROLE"){
-            next({name : 'administrator'})
+            next({name : 'homes'})
         } else {
             next();
         }
     } else if (to.path === '/' && store.state.isAuthenticated) {
         if (store.state.role == "ADMIN_ROLE") {
-            next({ name: 'customers' });
+            next({ name: 'homes' });
         } else if (store.state.role == "SUPER_MASTER") {
             next({ name: 'homes' });
         }else if (store.state.role == "MASTER_ADMIN_ROLE"){
-            next({name : 'administrator'})
+            next({name : 'homes'})
         } else {
             next();
         }

@@ -14,5 +14,5 @@ export function usernameAvailabilityApi(username, token) {
 
 export function authLoginApi(data) {
     console.log("==============================>",data)
-    return axios.post(`${baseURL}/auth/login`, data)
+    return axios.post(`${baseURL}/auth/login/web`, data)
 }

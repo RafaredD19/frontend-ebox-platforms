@@ -6,14 +6,35 @@
                 <div class="p-2 py-7 flex items-center justify-center gap-2">
                     <div>
                         <div class="p-1 pt-4 flex items-center justify-center">
-                            <img :src="logobox" class="w-5 h-5 bg-gray-100 rounded-md " />
+                            <img :src="logoEdriver" class="w-[6rem] bg-gray-100 rounded-md" />
                         </div>
-                        <p v-if="!rail" class="font-bold text-2xl text-center w-full">Caja Común</p>
+                        <p v-if="!rail" class="font-bold text-2xl text-center w-full">eDriver</p>
                     </div>
                 </div>
-                <SidebarLayout :itemsNavegation="filteredItems" :rail="rail" />
+                <v-list>
+                    <div v-for="itemNavegation in filteredItems" :key="itemNavegation.value">
+                        <router-link :to="itemNavegation.to" v-if="itemNavegation.children.length == 0">
+                            <v-list-item @click="selectItem(itemNavegation.to)" :prepend-icon="itemNavegation.icon"
+                                :title="itemNavegation.title" :value="itemNavegation.value"
+                                :class="{ 'selected-item': selectedItem === itemNavegation.to }"></v-list-item>
+                        </router-link>
+                        <v-list-group v-else :value="itemNavegation.value" fluid>
+                            <template v-slot:activator="{ props }">
+                                <v-list-item v-bind="props" :prepend-icon="itemNavegation.icon" :title="itemNavegation.title"
+                                    active-class="bg-indigo-lighten-1"></v-list-item>
+                            </template>
+                            <div :class="{ 'my-2 border-l-4 border-blue-500 ml-3': !rail, 'my-2 border-l-4 border-blue-700': rail }">
+                                <router-link :to="item.to" v-for="item in itemNavegation.children" :key="item.value" class="rounded-md">
+                                    <v-list-item @click="selectItem(item.to)" :prepend-icon="item.icon" :title="item.title"
+                                        :value="item.value" active-class="blue-darken-3 rounded-md"
+                                        :class="{ 'selected-item': selectedItem === item.to }"></v-list-item>
+                                </router-link>
+                            </div>
+                        </v-list-group>
+                    </div>
+                </v-list>
             </v-navigation-drawer>
-            <v-main class="h-screen bg-red-100 block">
+            <v-main class="h-screen bg-slate-100 block">
                 <div class="w-full bg-white flex justify-between items-center px-3 shadow-sm">
                     <v-btn variant="text" icon="mdi-menu" color="blue-grey-lighten-1" class="cursor-pointer"
                         @click.stop="rail = !rail"></v-btn>
@@ -41,39 +62,39 @@
             </v-main>
         </v-layout>
     </v-card>
-</template>
-
-<script>
-import { ref, onMounted, computed } from 'vue';
-import SidebarLayout from './SidebarLayout.vue';
-import avatarImage from "@/assets/iconuser_hombre.png";
-import MenuAsPopover from '@/components/general/MenuAsPopover.vue';
-import Logobox from "@/assets/logo_caja_comun.png";
-import store from '@/store';
-
-export default {
+  </template>
+  
+  <script>
+  import { ref, onMounted, computed } from 'vue';
+  import { useRoute } from 'vue-router';
+  import MenuAsPopover from '@/components/general/MenuAsPopover.vue';
+  // import avatarImage from "@/assets/iconuser_hombre.png";
+  // import LogoEdriver from "@/assets/logo.png";
+  import store from '@/store';
+  
+  export default {
     components: {
-        MenuAsPopover,
-        SidebarLayout
+         MenuAsPopover
     },
     data() {
         return {
-            avatarPath: avatarImage,
-            logobox: Logobox
+            // avatarPath: avatarImage,
+            // logoEdriver: LogoEdriver
         }
     },
     setup() {
         const isMobile = ref(false);
-        const drawer = ref(true)
-        const rail = ref(true)
-        const rol = ref('')
-        const username = ref('')
+        const drawer = ref(true);
+        const rail = ref(true);
+        const rol = ref('');
+        const username = ref('');
+        const selectedItem = ref(null);
         const ItemsNavegation = ref([
             {
                 icon: "mdi-file-question-outline",
                 title: "Formularios",
-                value: "homes",
-                to: "/homes",
+                value: "forms",
+                to: "/forms",
                 children: []
             },
             {
@@ -98,58 +119,70 @@ export default {
                 children: []
             }
         ]);
-
+  
+        const router = useRoute();
+  
         onMounted(() => {
-            rol.value = "Administrador"
-            username.value = store.state.username
+            rol.value = "Administrador";
+            username.value = store.state.username;
             handleResize();
             window.addEventListener("resize", handleResize);
-        })
-
+            selectedItem.value = router.fullPath;
+        });
+  
         const filteredItems = computed(() => {
-            // Lógica para filtrar los ítems según el rol
             if (store.state.role === 'ADMIN_ROLE') {
                 return ItemsNavegation.value.filter(item => item.value === 'companies');
-            } else if (store.state.role === 'SUPER_MASTER') {
-  
-                return ItemsNavegation.value.filter(item => item.value === 'homes' || item.value === 'reportsforms');
+            } else if (store.state.role === 'REGULAR_USER_ROLE') {
+                return ItemsNavegation.value.filter(item => item.value === 'forms' || item.value === 'reportsforms');
             } else if (store.state.role === 'MASTER_ADMIN_ROLE') {
-                // Filtra la lista para mostrar solo ciertos ítems para el rol de master admin
                 return ItemsNavegation.value.filter(item => item.value === 'administrator');
             } else {
-                return []; // Si el rol no coincide con ninguna condición, muestra una lista vacía
+                return [];
             }
         });
-
+  
         const handleResize = () => {
-            isMobile.value = window.innerWidth <= 500; // Define aquí el ancho máximo para considerar como pantalla pequeña
+            isMobile.value = window.innerWidth <= 500;
         };
-
+  
+        const selectItem = (item) => {
+            selectedItem.value = item;
+        };
+  
         return {
             isMobile,
             drawer,
             rail,
             rol,
             username,
+            selectedItem,
             ItemsNavegation,
-            filteredItems
+            filteredItems,
+            selectItem
         }
     }
-}
-</script>
-
-<style>
-.v-list-item-title {
+  }
+  </script>
+  
+  <style>
+  .selected-item {
+    background-color: #4777bea1 !important;
+    border-right: 4px solid rgb(119, 153, 190);
+  }
+  
+  .v-list-item-title {
     font-size: 14px !important;
-}
-
-.v-list-item-subtitle {
+  }
+  
+  .v-list-item-subtitle {
     font-size: 13px !important;
-}
-
-.section_main {
+  }
+  
+  .section_main {
     overflow-y: auto !important;
     height: 100%;
     padding-bottom: 5rem !important;
-}
-</style>
+  }
+  </style>
+  
