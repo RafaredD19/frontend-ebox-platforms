@@ -8,7 +8,7 @@
                         <div class="p-1 pt-4 flex items-center justify-center">
                             <img :src="logoEdriver" class="w-[6rem] bg-gray-100 rounded-md" />
                         </div>
-                        <p v-if="!rail" class="font-bold text-2xl text-center w-full">eDriver</p>
+                        <p v-if="!rail" class="font-bold text-2xl text-center w-full">CommonBox</p>
                     </div>
                 </div>
                 <v-list>
@@ -93,8 +93,8 @@
             {
                 icon: "mdi-file-question-outline",
                 title: "Formularios",
-                value: "forms",
-                to: "/forms",
+                value: "homes",
+                to: "/homes",
                 children: []
             },
             {
@@ -113,9 +113,9 @@
             },
             {
                 icon: "mdi-account-group",
-                title: "Administradores",
-                value: "administrator",
-                to: "/administrator",
+                title: "Cuentas Master",
+                value: "master",
+                to: "/master",
                 children: []
             }
         ]);
@@ -123,7 +123,7 @@
         const router = useRoute();
   
         onMounted(() => {
-            rol.value = "Administrador";
+            rol.value = "master";
             username.value = store.state.username;
             handleResize();
             window.addEventListener("resize", handleResize);
@@ -131,12 +131,12 @@
         });
   
         const filteredItems = computed(() => {
-            if (store.state.role === 'ADMIN_ROLE') {
-                return ItemsNavegation.value.filter(item => item.value === 'companies');
-            } else if (store.state.role === 'REGULAR_USER_ROLE') {
+            if (store.state.role === 'SUPER_MASTER') {
+                return ItemsNavegation.value.filter(item => item.value === 'master');
+            } else if (store.state.role === 'MASTER') {
                 return ItemsNavegation.value.filter(item => item.value === 'forms' || item.value === 'reportsforms');
-            } else if (store.state.role === 'MASTER_ADMIN_ROLE') {
-                return ItemsNavegation.value.filter(item => item.value === 'administrator');
+            } else if (store.state.role === 'COMPANY') {
+                return ItemsNavegation.value.filter(item => item.value === 'companies');
             } else {
                 return [];
             }

@@ -13,9 +13,9 @@ const router = createRouter({
             children: [
               
                 {
-                    name: "homes",
-                    path: "homes",
-                    component: () => import("@/views/HomesView.vue"),
+                    name: "master",
+                    path: "master",
+                    component: () => import("@/views/MasterView.vue"),
                 },
                
                
@@ -39,20 +39,20 @@ router.beforeEach((to, from, next) => {
        
         next({ name: 'login' });
     } else if (to.name === 'login' && store.state.isAuthenticated) {
-        if (store.state.role == "ADMIN_ROLE") {
-            next({ name: 'homes' });
-        } else if (store.state.role == "SUPER_MASTER") {
-            next({ name: 'homes' });
+        if (store.state.role == "SUPER_MASTER") {
+            next({ name: 'master' });
+        } else if (store.state.role == "ADMIN_ROLE") {
+            next({ name: 'master' });
         }else if (store.state.role == "MASTER_ADMIN_ROLE"){
             next({name : 'homes'})
         } else {
             next();
         }
     } else if (to.path === '/' && store.state.isAuthenticated) {
-        if (store.state.role == "ADMIN_ROLE") {
-            next({ name: 'homes' });
-        } else if (store.state.role == "SUPER_MASTER") {
-            next({ name: 'homes' });
+        if (store.state.role == "SUPER_MASTER") {
+            next({ name: 'master' });
+        } else if (store.state.role == "ADMIN_ROLE") {
+            next({ name: 'master' });
         }else if (store.state.role == "MASTER_ADMIN_ROLE"){
             next({name : 'homes'})
         } else {

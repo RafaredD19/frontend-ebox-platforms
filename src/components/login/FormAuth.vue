@@ -8,7 +8,7 @@
           </v-card-title>
           <div>
             <div class="w-full flex justify-center"></div>
-            <h1 class="text-2xl pb-2 color-blue-600 text-center">Bienvenido a eBox</h1>
+            <h1 class="text-2xl pb-2 color-blue-600 text-center">Bienvenido a Commonbox</h1>
             <p class="text-xs pb-2 text-gray-500 text-center mt-2 pr-10 pl-10">
               Ingresa las credenciales otorgadas por tu proveedor
             </p>
