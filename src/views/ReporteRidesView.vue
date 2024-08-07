@@ -1,43 +1,42 @@
 <template>
-
+  <v-container>
     <v-card-title>
-      <h1 class="font-bold lg:text-2xl text-xl text-gray-400">Cuentas Compañias</h1>
+      <h1 class="font-bold lg:text-2xl text-xl text-gray-400">Reporte de Rutinas</h1>
     </v-card-title>
-    <v-row justify="end">
-      <v-btn color="primary" class="mb-7 mr-7" @click="openDialog">
-        Crear +
-      </v-btn>
-    </v-row>
+    <DateFilter @filter-applied="applyFilter" @export-pdf="exportPDF" />
     <div class="TableMaster">
-    <TableMaster />
-  </div>
-    <CreateMaster ref="createMasterModal" />
-
+      <TableRrides ref="tableRrides" />
+    </div>
+  </v-container>
 </template>
 
 <script>
-import TableMaster from '@/components/companie/TableCompanie.vue';
-import CreateMaster from '@/components/companie/CreateCompanie.vue';
+import TableRrides from '@/components/reporte/TableRrides.vue';
+import DateFilter from '@/components/reporte/DateFilter.vue';
+import { generatePDF } from '@/helpers/ReportRides';
 
 export default {
-name: 'MasterView',
-components: {
-TableMaster,
-CreateMaster,
-},
-methods: {
-openDialog() {
-  this.$refs.createMasterModal.dialog = true;
-},
-},
+  name: 'ReporteRidesView',
+  components: {
+    TableRrides,
+    DateFilter,
+  },
+  methods: {
+    applyFilter(filter) {
+      this.$refs.tableRrides.fetchRides(filter);
+    },
+    exportPDF() {
+      const data = this.$refs.tableRrides.rides;
+      generatePDF(data);
+    },
+  },
 };
 </script>
 
 <style scoped>
-.TableMaster{
-border-radius: 15px;
-max-width: auto;
-margin-top: 0%;
+.TableMaster {
+  border-radius: 15px;
+  max-width: auto;
+  margin-top: 0%;
 }
-
 </style>

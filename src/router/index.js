@@ -28,9 +28,9 @@ const router = createRouter({
                     component: () => import("@/views/VehicleView.vue"),
                 },
                 {
-                    name: "rDriver",
-                    path: "rDriver",
-                    component: () => import("@/views/ReporteDriverView.vue"),
+                    name: "rVehicle",
+                    path: "rVehicle",
+                    component: () => import("@/views/ReporteVehicleView.vue"),
                 },
                 {
                     name: "rRides",

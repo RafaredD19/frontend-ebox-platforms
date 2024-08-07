@@ -100,9 +100,9 @@
             },
             {
                 icon: "mdi-form-select",
-                title: "Reporte conductores",
-                value: "rDriver",
-                to: "/rDriver",
+                title: "Reporte Vehiculos",
+                value: "rVehicle",
+                to: "/rVehicle",
                 children: []
             },
             {
@@ -145,7 +145,7 @@
             } else if (store.state.role === 'MASTER') {
                 return ItemsNavegation.value.filter(item => item.value === 'companie' );
             } else if (store.state.role === 'COMPANY') {
-                return ItemsNavegation.value.filter(item => item.value === 'vehicle' || item.value === 'rDriver' || item.value === 'rRides');
+                return ItemsNavegation.value.filter(item => item.value === 'vehicle' || item.value === 'rVehicle' || item.value === 'rRides');
             } else {
                 return [];
             }
