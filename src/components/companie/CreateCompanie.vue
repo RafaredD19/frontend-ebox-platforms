@@ -9,11 +9,31 @@
         <v-text-field label="Nombre del Negocio" v-model="business"></v-text-field>
         <v-text-field label="RUC" v-model="ruc"></v-text-field>
         <v-text-field label="Nombre de Usuario" v-model="username"></v-text-field>
-        <v-text-field label="Contraseña" v-model="password" type="password"></v-text-field>
+        <v-text-field
+          label="Contraseña"
+          v-model="password"
+          :type="showPassword ? 'text' : 'password'"
+          :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+          @click:append="toggleShowPassword"
+        ></v-text-field>
         <v-text-field label="Token Nimbus" v-model="tokenNimbus"></v-text-field>
         <v-text-field label="Usuario Wialon" v-model="usernameWialon" @blur="fetchRecourses"></v-text-field>
-        <v-text-field label="Contraseña Wialon" v-model="passwordWialon" type="password" @blur="fetchRecourses"></v-text-field>
+        <v-text-field
+          label="Contraseña Wialon"
+          v-model="passwordWialon"
+          :type="showPasswordWialon ? 'text' : 'password'"
+          :append-icon="showPasswordWialon ? 'mdi-eye-off' : 'mdi-eye'"
+          @click:append="toggleShowPasswordWialon"
+          @blur="fetchRecourses"
+        ></v-text-field>
         <v-select
+          v-if="loadingRecourses"
+          :items="[]"
+          label="Cargando recursos..."
+          :disabled="true"
+        ></v-select>
+        <v-select
+          v-else
           :items="recourseNames"
           label="Recurso Wialon"
           v-model="selectedRecourseName"
@@ -50,7 +70,10 @@ export default {
       recourses: [],
       recourseNames: [],
       selectedRecourseName: '',
-      image: null, 
+      image: null,
+      loadingRecourses: false,
+      showPassword: false,
+      showPasswordWialon: false,
     };
   },
   methods: {
@@ -71,7 +94,7 @@ export default {
         usernameWialon: this.usernameWialon,
         passwordWialon: this.passwordWialon,
         recourseWialon: recourseWialon,
-        image: this.image, 
+        image: this.image,
       };
 
       const token = store.state.token;
@@ -86,7 +109,7 @@ export default {
 
       try {
         await CompanieCreatetApi(formData, token);
-        this.$emit('accountCreated'); 
+        this.$emit('accountCreated');
         this.dialog = false;
         this.resetForm();
         Swal.fire({
@@ -97,7 +120,7 @@ export default {
         });
       } catch (error) {
         console.error('Error al crear la cuenta:', error);
-        this.dialog = false; 
+        this.dialog = false;
         this.resetForm();
         const errorMessage = Array.isArray(error.response.data.message)
           ? error.response.data.message.join(', ')
@@ -118,6 +141,7 @@ export default {
         };
         const token = store.state.token;
 
+        this.loadingRecourses = true;
         try {
           const response = await RecourseListApi(token, payload);
           this.recourses = response.data.data;
@@ -126,8 +150,16 @@ export default {
           console.error('Error al obtener los recursos:', error);
           this.recourses = [];
           this.recourseNames = [];
+        } finally {
+          this.loadingRecourses = false;
         }
       }
+    },
+    toggleShowPassword() {
+      this.showPassword = !this.showPassword;
+    },
+    toggleShowPasswordWialon() {
+      this.showPasswordWialon = !this.showPasswordWialon;
     },
     resetForm() {
       this.business = '';
@@ -141,6 +173,9 @@ export default {
       this.recourseNames = [];
       this.selectedRecourseName = '';
       this.image = null;
+      this.loadingRecourses = false;
+      this.showPassword = false;
+      this.showPasswordWialon = false;
     },
   },
 };
