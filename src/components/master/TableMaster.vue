@@ -4,10 +4,12 @@
     <v-card-text>
       <div class="table-container">
         <v-data-table
-          :headers="headers"
-          :items="masters"
-          class="elevation-1"
-          :search="search"
+        :headers="headers"
+            :items="masters"
+            class="elevation-1"
+            :search="search"
+            :loading="loading"
+            loading-text="Cargando... Espere Por favor"
         >
           <template v-slot:top>
            
@@ -18,6 +20,7 @@
                 label="Buscar"
                 single-line
                 hide-details
+                @input="handleSearch"
               ></v-text-field>
          
           </template>
@@ -63,6 +66,13 @@ export default {
         console.error('Error fetching masters:', error);
       }
     },
+    handleSearch() {
+        this.loading = true;
+        setTimeout(async () => {
+          await this.fetchMasters(); // Aquí puedes modificar para una búsqueda específica
+          this.loading = false;
+        }, 500); // Agregar un retraso para simular el tiempo de búsqueda
+      },
   },
 };
 </script>

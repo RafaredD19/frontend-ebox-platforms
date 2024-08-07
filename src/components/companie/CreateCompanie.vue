@@ -7,8 +7,17 @@
   
         <v-card-text>
           <v-text-field label="Nombre del Negocio" v-model="business"></v-text-field>
+          <v-text-field label="RUC" v-model="ruc"></v-text-field>
           <v-text-field label="Nombre de Usuario" v-model="username"></v-text-field>
           <v-text-field label="Contraseña" v-model="password" type="password"></v-text-field>
+          <v-text-field label="Token Nimbus" v-model="tokenNimbus"></v-text-field>
+          <v-text-field label="Usuario Wialon" v-model="usernameWialon"></v-text-field>
+          <v-text-field label="Contraseña Wialon" v-model="passwordWialon" type="password"></v-text-field>
+          <v-file-input
+            label="Subir Imagen"
+            v-model="image"
+            accept="image/*"
+          ></v-file-input>
         </v-card-text>
   
         <v-card-actions>
@@ -22,17 +31,22 @@
   
   <script>
   import Swal from 'sweetalert2';
-  import { MasterCreatetApi } from '@/api/MasterService';
+  import { CompanieCreatetApi } from '@/api/CompanieService';
   import store from '@/store';
   
   export default {
-    name: 'CreateCompanie',
+    name: 'CreateMaster',
     data() {
       return {
         dialog: false,
         business: '',
+        ruc: '',
         username: '',
         password: '',
+        tokenNimbus: '',
+        usernameWialon: '',
+        passwordWialon: '',
+        image: null, 
       };
     },
     methods: {
@@ -43,15 +57,28 @@
       async save() {
         const payload = {
           business: this.business,
+          ruc: this.ruc,
           username: this.username,
           password: this.password,
+          tokenNimbus: this.tokenNimbus,
+          usernameWialon: this.usernameWialon,
+          passwordWialon: this.passwordWialon,
+          image: this.image, 
         };
   
         const token = store.state.token;
   
+        // Crear el FormData
+        const formData = new FormData();
+        for (const key in payload) {
+          if (Object.prototype.hasOwnProperty.call(payload, key)) {
+            formData.append(key, payload[key]);
+          }
+        }
+  
         try {
-          await MasterCreatetApi(payload, token);
-          this.$emit('accountCreated'); // Emit event to notify parent component
+          await CompanieCreatetApi(formData, token);
+          this.$emit('accountCreated'); 
           this.dialog = false;
           this.resetForm();
           Swal.fire({
@@ -60,30 +87,33 @@
             showConfirmButton: true,
             timer: 3000
           });
-          
-        setTimeout(() => {
-        location.reload();
-      }, 3000);
         } catch (error) {
           console.error('Error al crear la cuenta:', error);
+          this.dialog = false; 
+          this.resetForm();
+          const errorMessage = Array.isArray(error.response.data.message)
+            ? error.response.data.message.join(', ')
+            : error.response.data.message;
           Swal.fire({
             icon: 'error',
             title: 'Error al crear la cuenta',
-            text: 'Por favor, inténtelo de nuevo.',
+            text: errorMessage || 'Por favor, inténtelo de nuevo.',
             showConfirmButton: true
           });
         }
       },
       resetForm() {
         this.business = '';
+        this.ruc = '';
         this.username = '';
         this.password = '';
+        this.tokenNimbus = '';
+        this.usernameWialon = '';
+        this.passwordWialon = '';
+        this.image = null;
       },
     },
   };
   </script>
   
-  <style scoped>
-  /* Puedes añadir estilos específicos aquí si los necesitas */
-  </style>
-  
+ 

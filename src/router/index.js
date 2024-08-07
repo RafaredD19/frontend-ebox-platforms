@@ -17,8 +17,30 @@ const router = createRouter({
                     path: "master",
                     component: () => import("@/views/MasterView.vue"),
                 },
+                {
+                    name: "companie",
+                    path: "companie",
+                    component: () => import("@/views/CompanieView.vue"),
+                },
+                {
+                    name: "vehicle",
+                    path: "vehicle",
+                    component: () => import("@/views/VehicleView.vue"),
+                },
+                {
+                    name: "rDriver",
+                    path: "rDriver",
+                    component: () => import("@/views/ReporteDriverView.vue"),
+                },
+                {
+                    name: "rRides",
+                    path: "rRides",
+                    component: () => import("@/views/ReporteRidesView.vue"),
+                },
                
                
+               
+             
             ]
         },
         {
@@ -41,20 +63,20 @@ router.beforeEach((to, from, next) => {
     } else if (to.name === 'login' && store.state.isAuthenticated) {
         if (store.state.role == "SUPER_MASTER") {
             next({ name: 'master' });
-        } else if (store.state.role == "ADMIN_ROLE") {
-            next({ name: 'master' });
-        }else if (store.state.role == "MASTER_ADMIN_ROLE"){
-            next({name : 'homes'})
+        } else if (store.state.role == "MASTER") {
+            next({ name: 'companie' });
+        }else if (store.state.role == "COMPANY"){
+            next({name : 'vehicle'})
         } else {
             next();
         }
     } else if (to.path === '/' && store.state.isAuthenticated) {
         if (store.state.role == "SUPER_MASTER") {
             next({ name: 'master' });
-        } else if (store.state.role == "ADMIN_ROLE") {
-            next({ name: 'master' });
-        }else if (store.state.role == "MASTER_ADMIN_ROLE"){
-            next({name : 'homes'})
+        } else if (store.state.role == "MASTER") {
+            next({ name: 'companie' });
+        }else if (store.state.role == "COMPANY"){
+            next({name : 'vehicle'})
         } else {
             next();
         }

@@ -90,25 +90,34 @@
         const username = ref('');
         const selectedItem = ref(null);
         const ItemsNavegation = ref([
-            {
-                icon: "mdi-file-question-outline",
-                title: "Formularios",
-                value: "homes",
-                to: "/homes",
+        
+        {
+                icon: "mdi-bus",
+                title: "Vehiculos",
+                value: "vehicle",
+                to: "/vehicle",
                 children: []
             },
             {
                 icon: "mdi-form-select",
-                title: "Reportes formularios",
-                value: "reportsforms",
-                to: "/reportsforms",
+                title: "Reporte conductores",
+                value: "rDriver",
+                to: "/rDriver",
                 children: []
             },
             {
+                icon: "mdi-form-select",
+                title: "Reporte de Rutinas",
+                value: "rRides",
+                to: "/rRides",
+                children: []
+            },
+          
+            {
                 icon: "mdi-domain",
                 title: "Compañias",
-                value: "companies",
-                to: "/customers",
+                value: "companie",
+                to: "/companie",
                 children: []
             },
             {
@@ -134,9 +143,9 @@
             if (store.state.role === 'SUPER_MASTER') {
                 return ItemsNavegation.value.filter(item => item.value === 'master');
             } else if (store.state.role === 'MASTER') {
-                return ItemsNavegation.value.filter(item => item.value === 'forms' || item.value === 'reportsforms');
+                return ItemsNavegation.value.filter(item => item.value === 'companie' );
             } else if (store.state.role === 'COMPANY') {
-                return ItemsNavegation.value.filter(item => item.value === 'companies');
+                return ItemsNavegation.value.filter(item => item.value === 'vehicle' || item.value === 'rDriver' || item.value === 'rRides');
             } else {
                 return [];
             }
