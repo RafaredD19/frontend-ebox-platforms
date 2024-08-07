@@ -14,7 +14,18 @@ export function CompanieListApi( token ) {
     })
 }
 
+
+export function RecourseListApi( token, payload ) {
+
+  return axiosInstance.post(`${baseURL}/companies/recourses`,payload,{
+      headers: {
+          Authorization: `Bearer ${token}`
+      }
+  })
+}
+
 export function CompanieCreatetApi(formData, token) {
+  console.log("=======================>",formData)
     return axiosInstance.post(`${baseURL}/companies`, formData, {
       headers: {
         Authorization: `Bearer ${token}`,
