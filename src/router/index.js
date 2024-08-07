@@ -37,10 +37,14 @@ const router = createRouter({
                     path: "rRides",
                     component: () => import("@/views/ReporteRidesView.vue"),
                 },
+                {
+                    name: "rDriver",
+                    path: "rDriver",
+                    component: () => import("@/views/ReporteDriverView.vue"),
+                },
                
                
-               
-             
+                
             ]
         },
         {

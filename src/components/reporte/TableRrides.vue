@@ -7,28 +7,30 @@
         <table class="min-w-full divide-y divide-gray-200">
           <thead class="bg-gray-50">
             <tr>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Descripción</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Unidad</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Horarios</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">FECHA</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">UNIDAD</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">RUTA</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">DESCRIPCIÓN</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">HORARIOS</th>
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
             <template v-for="(ride, index) in paginatedRides" :key="ride.id">
               <tr @click="toggleDetails(index)" class="cursor-pointer">
+                <td class="px-6 py-4 whitespace-nowrap">{{ ride.date }}</td>
+                <td class="px-6 py-4 whitespace-nowrap">{{ ride.unit }}</td>
                 <td class="px-6 py-4 whitespace-nowrap">{{ ride.name }}</td>
                 <td class="px-6 py-4 whitespace-nowrap">{{ ride.description }}</td>
-                <td class="px-6 py-4 whitespace-nowrap">{{ ride.unit }}</td>
-                <td class="px-6 py-4 whitespace-nowrap">{{ ride.date }}</td>
                 <td class="px-6 py-4 whitespace-nowrap">{{ ride.firstSchedule }}</td>
               </tr>
               <template v-if="ride.showDetails">
                 <tr v-for="(schedule, sIndex) in ride.schedules.slice(1)" :key="`${ride.id}-${sIndex}`" class="bg-gray-100">
+                  <td class="px-6 py-4 whitespace-nowrap"></td>
+                  <td class="px-6 py-4 whitespace-nowrap"></td>
                   <td class="px-6 py-4 whitespace-nowrap">{{ ride.name }}</td>
                   <td class="px-6 py-4 whitespace-nowrap">{{ ride.description }}</td>
-                  <td class="px-6 py-4 whitespace-nowrap">{{ ride.unit }}</td>
-                  <td class="px-6 py-4 whitespace-nowrap">{{ ride.date }}</td>
+                 
+            
                   <td class="px-6 py-4 whitespace-nowrap">{{ schedule }}</td>
                 </tr>
               </template>

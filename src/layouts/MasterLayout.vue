@@ -112,7 +112,13 @@
                 to: "/rRides",
                 children: []
             },
-          
+            {
+                icon: "mdi-form-select",
+                title: "Reporte de Conductore",
+                value: "rDriver",
+                to: "/rDriver",
+                children: []
+            },
             {
                 icon: "mdi-domain",
                 title: "Compañias",
@@ -145,7 +151,7 @@
             } else if (store.state.role === 'MASTER') {
                 return ItemsNavegation.value.filter(item => item.value === 'companie' );
             } else if (store.state.role === 'COMPANY') {
-                return ItemsNavegation.value.filter(item => item.value === 'vehicle' || item.value === 'rVehicle' || item.value === 'rRides');
+                return ItemsNavegation.value.filter(item =>  item.value === 'rVehicle' || item.value === 'rRides' || item.value === 'rDriver');
             } else {
                 return [];
             }

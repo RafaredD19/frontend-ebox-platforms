@@ -2,7 +2,7 @@
     <v-dialog v-model="dialog" max-width="500px">
       <v-card>
         <v-card-title>
-          <span class="text-h5">Crear Cuenta Master</span>
+          <span class="text-h5">Crear Cuenta Compañia</span>
         </v-card-title>
   
         <v-card-text>
